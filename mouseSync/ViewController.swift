@@ -22,12 +22,22 @@ class ViewController: NSViewController {
             self.mouseLocation = NSEvent.mouseLocation()
             print(String(format: "%.0f, %.0f", self.mouseLocation.x, self.mouseLocation.y))
         }
+        
+        
+       
+        
     }
 
     override var representedObject: Any? {
         didSet {
         // Update the view, if already loaded.
         }
+    }
+    
+    func move(_ dx:CGFloat , _ dy:CGFloat){
+        let mouseLoc = NSEvent.mouseLocation()
+        let newLoc = CGPoint(x: mouseLoc.x-CGFloat(dx), y: mouseLoc.y+CGFloat(dy))
+        CGDisplayMoveCursorToPoint(0, newLoc)
     }
 
 
