@@ -10,10 +10,18 @@ import Cocoa
 
 class ViewController: NSViewController {
 
+    var mouseLocation: CGPoint = .zero
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        NSEvent.addLocalMonitorForEvents(matching: [.mouseMoved]) {
+            self.mouseLocation = NSEvent.mouseLocation()
+            print(String(format: "%.0f, %.0f", self.mouseLocation.x, self.mouseLocation.y))
+            return $0
+        }
+        NSEvent.addGlobalMonitorForEvents(matching: [.mouseMoved]) { _ in
+            self.mouseLocation = NSEvent.mouseLocation()
+            print(String(format: "%.0f, %.0f", self.mouseLocation.x, self.mouseLocation.y))
+        }
     }
 
     override var representedObject: Any? {
