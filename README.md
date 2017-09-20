@@ -5,7 +5,7 @@
 
 === 2017-09-20日更新 ===
 
-鼠标可以响应move事件了。demo url: https://syy.freep.cn/588778/demo.gif
+鼠标可以响应move、单击、右击事件。demo url: https://syy.freep.cn/588778/demo.gif
 
 请注意demo中MacBook Air与MacBook Pro光标移动位置。
 
