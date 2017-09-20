@@ -14,9 +14,10 @@ class ViewController: NSViewController {
     let SCREEN_HEIGHT = NSScreen.main()!.frame.height
 
     var mouseLocation: CGPoint = .zero
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         
         var previousX = NSEvent.mouseLocation().x;
         var previousY = NSEvent.mouseLocation().y;
