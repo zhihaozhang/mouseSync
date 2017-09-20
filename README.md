@@ -7,4 +7,4 @@
 
 鼠标可以响应move事件了。demo url: https://syy.freep.cn/588778/demo.gif
 
-![](https://syy.freep.cn/588778/demo.gif)
+![](https://syy.freep.cn/588778/ezgif-4-eef677666d.gif)
