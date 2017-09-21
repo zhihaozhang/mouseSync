@@ -12,21 +12,22 @@ import CoreBluetooth
 
 let kServiceUUID: String = "84941CC5-EA0D-4CAE-BB06-1F849CCF8495"
 let kCharacteristicUUID: String = "2BCD"
+var LastTimeStamp: NSDate = NSDate()
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     
     var peripheralManager: CBPeripheralManager?
     var characteristic :CBMutableCharacteristic?
-
-
-
+    
+    
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         var previousX = NSEvent.mouseLocation().x;
         var previousY = NSEvent.mouseLocation().y;
         
-        NSEvent.addLocalMonitorForEvents(matching: [.mouseMoved,.leftMouseDown]) {
+        NSEvent.addLocalMonitorForEvents(matching: [.mouseMoved]) {
             self.mouseLocation = NSEvent.mouseLocation()
             
             self.notifyValueAction(Int(NSEvent.mouseLocation().x-previousX),Int(NSEvent.mouseLocation().y-previousY))
@@ -34,35 +35,83 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             previousX = NSEvent.mouseLocation().x;
             previousY = NSEvent.mouseLocation().y;
             
-            
-            
             return $0
         }
         
         NSEvent.addGlobalMonitorForEvents(matching: [.mouseMoved]) { _ in
             self.mouseLocation = NSEvent.mouseLocation()
-           
+            self.notifyValueAction(Int(NSEvent.mouseLocation().x-previousX),Int(NSEvent.mouseLocation().y-previousY))
+            
+            previousX = NSEvent.mouseLocation().x;
+            previousY = NSEvent.mouseLocation().y;
             
         }
         
-        NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown]) {_ in
-            self.mouseLocation = NSEvent.mouseLocation()
-             print(String(format: "%.0f, %.0f", self.mouseLocation.x, self.mouseLocation.y))
-//            self.mouseMoveAndClick(onPoint: self.mouseLocation)
+       
+        
+        NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown]) {event in
+            
+            if event.clickCount >= 2{
+                self.notifyValueAction(-5555, -5555)
+                
+            }else{
+                self.mouseLocation = NSEvent.mouseLocation()
+                self.notifyValueAction(-9999, -9999)
+            }
         }
+        
+        
+        NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseUp]) {_ in
+            self.mouseLocation = NSEvent.mouseLocation()
+            self.notifyValueAction(-8888, -8888)
+        }
+        
+        
+        
+        NSEvent.addGlobalMonitorForEvents(matching: [.rightMouseDown]) {_ in
+            self.mouseLocation = NSEvent.mouseLocation()
+            
+            var mouseLoc = NSEvent.mouseLocation()
+            mouseLoc.y = NSHeight(NSScreen.screens()![0].frame) - mouseLoc.y;
+            
+            self.notifyValueAction(-7777, -7777)
+            
+        }
+        
+//        NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDragged]) {_ in
+//            self.mouseLocation = NSEvent.mouseLocation()
+//            self.notifyValueAction(-6666, -6666)
+//        }
+        
+        NSEvent.addGlobalMonitorForEvents(matching: [.scrollWheel]) {event in
+            
+            var dx = abs(Int(event.deltaX))
+            var dy = abs(Int(event.deltaY))
+            if (dx == 0 && dy == 0) {
+                
+            }else if dx>dy {
+                print("flag1 \(dx) \(dy)")
+                self.notifyValueAction(Int(event.deltaX), -6666)
+            }else{
+                print("flag2 \(dx) \(dy)")
+                self.notifyValueAction(-6666, Int(event.deltaY))
+            }
+        }
+        
+
         
         var peripheralManager: CBPeripheralManager?
         var characteristic :CBMutableCharacteristic?
         
         self.configCharacteristic()
         self.peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
-
+        
     }
-
+    
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
-
+    
     
     
     let SCREEN_WIDTH = NSScreen.main()!.frame.width
@@ -75,7 +124,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.mouseMoveAndClick(onPoint: self.mouseLocation)
     }
     
-
+    
     
     
     func move(_ dx:CGFloat , _ dy:CGFloat){
@@ -208,8 +257,6 @@ extension AppDelegate: CBPeripheralManagerDelegate {
         print("peripheralManager did advertising !")
     }
     
-    
-    
     func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveRead request: CBATTRequest) {
         
         if request.characteristic.uuid != self.characteristic?.uuid {
@@ -253,6 +300,31 @@ extension AppDelegate: CBPeripheralManagerDelegate {
             print("didSubscribeToCharacteristic");
         }
     }
+    
+    func doubleClick(at location: NSPoint) {
+        let source = CGEventSource(stateID: .privateState)
+        
+        var click = CGEvent(mouseEventSource: source, mouseType: .leftMouseDown,
+                            mouseCursorPosition: location, mouseButton: .left)
+        click?.setIntegerValueField(.mouseEventClickState, value: 1)
+        click?.post(tap: .cghidEventTap)
+        
+        var release = CGEvent(mouseEventSource: source, mouseType: .leftMouseUp,
+                              mouseCursorPosition: location, mouseButton: .left)
+        release?.setIntegerValueField(.mouseEventClickState, value: 1)
+        release?.post(tap: .cghidEventTap)
+        
+        click = CGEvent(mouseEventSource: source, mouseType: .leftMouseDown,
+                        mouseCursorPosition: location, mouseButton: .left)
+        click?.setIntegerValueField(.mouseEventClickState, value: 2)
+        click?.post(tap: .cghidEventTap)
+        
+        release = CGEvent(mouseEventSource: source, mouseType: .leftMouseUp,
+                          mouseCursorPosition: location, mouseButton: .left)
+        release?.setIntegerValueField(.mouseEventClickState, value: 2)
+        release?.post(tap: .cghidEventTap)
+    }
+    
     
 }
 

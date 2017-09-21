@@ -41,6 +41,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         self.centralManager = CBCentralManager(delegate: self, queue: nil)
+        
+        NSEvent.addGlobalMonitorForEvents(matching: [.scrollWheel]) { event in
+            print(event)
+//            createScrollWheelEvent()
+        }
+        
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -164,9 +170,50 @@ extension AppDelegate: CBPeripheralDelegate {
         
         if dx != nil{
             if dy != nil{
-                print(dx!)
-                print(dy!)
-                self.move(CGFloat(dx!), CGFloat(dy!))
+                if dx == -9999 && dy == -9999{
+                    var mouseLoc = NSEvent.mouseLocation()
+                    mouseLoc.y = NSHeight(NSScreen.screens()![0].frame) - mouseLoc.y;
+                    let newLoc = CGPoint(x: mouseLoc.x, y: mouseLoc.y)
+
+                    print(mouseLoc)
+                    mouseMoveAndClickDown(onPoint: mouseLoc)
+                }else if dx == -8888 && dy == -8888{
+                    var mouseLoc = NSEvent.mouseLocation()
+                    mouseLoc.y = NSHeight(NSScreen.screens()![0].frame) - mouseLoc.y;
+                    let newLoc = CGPoint(x: mouseLoc.x, y: mouseLoc.y)
+                    
+                    print(mouseLoc)
+                    mouseMoveAndClickUp(onPoint: mouseLoc)
+                }
+                else if dx == -7777 && dy == -7777{
+                    var mouseLoc = NSEvent.mouseLocation()
+                    mouseLoc.y = NSHeight(NSScreen.screens()![0].frame) - mouseLoc.y;
+                    let newLoc = CGPoint(x: mouseLoc.x, y: mouseLoc.y)
+                    
+                    print(mouseLoc)
+                    mouseMoveAndRightClick(onPoint: mouseLoc)
+                }
+                else if dy == -6666{
+                    
+                    createScrollWheelEventX(Int32((dx)!))
+                    
+                }else if dx == -6666{
+                    createScrollWheelEventY(Float(dy!))
+                }
+                
+                else if dx == -5555 && dy == -5555{
+                    var mouseLoc = NSEvent.mouseLocation()
+                    mouseLoc.y = NSHeight(NSScreen.screens()![0].frame) - mouseLoc.y;
+                    let newLoc = CGPoint(x: mouseLoc.x, y: mouseLoc.y)
+                    
+                    doubleClick(at: newLoc)
+
+                }
+                else{
+                    print(dx!)
+                    print(dy!)
+                    self.move(CGFloat(dx!), CGFloat(dy!))
+                }
             }
         }
         
@@ -176,6 +223,77 @@ extension AppDelegate: CBPeripheralDelegate {
         
     }
     
+    
+    
+    func doubleClick(at location: NSPoint) {
+        let source = CGEventSource(stateID: .privateState)
+        
+        var click = CGEvent(mouseEventSource: source, mouseType: .leftMouseDown,
+                            mouseCursorPosition: location, mouseButton: .left)
+        click?.setIntegerValueField(.mouseEventClickState, value: 1)
+        click?.post(tap: .cghidEventTap)
+        
+        var release = CGEvent(mouseEventSource: source, mouseType: .leftMouseUp,
+                              mouseCursorPosition: location, mouseButton: .left)
+        release?.setIntegerValueField(.mouseEventClickState, value: 1)
+        release?.post(tap: .cghidEventTap)
+        
+        click = CGEvent(mouseEventSource: source, mouseType: .leftMouseDown,
+                        mouseCursorPosition: location, mouseButton: .left)
+        click?.setIntegerValueField(.mouseEventClickState, value: 2)
+        click?.post(tap: .cghidEventTap)
+        
+        release = CGEvent(mouseEventSource: source, mouseType: .leftMouseUp,
+                          mouseCursorPosition: location, mouseButton: .left)
+        release?.setIntegerValueField(.mouseEventClickState, value: 2)
+        release?.post(tap: .cghidEventTap)
+    }
+    
+    
+    
+    func mouseMoveAndClickDown(onPoint point: CGPoint) {
+        guard let downEvent = CGEvent(mouseEventSource: nil, mouseType: .leftMouseDown, mouseCursorPosition: point, mouseButton: .left) else {
+            return
+        }
+        
+              guard let moveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: point, mouseButton: .left) else {
+            return
+        }
+
+        downEvent.post(tap: CGEventTapLocation.cghidEventTap)
+        moveEvent.post(tap: CGEventTapLocation.cghidEventTap)
+        
+    }
+    
+    func mouseMoveAndClickUp(onPoint point: CGPoint) {
+//        guard let moveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: point, mouseButton: .left) else {
+//            return
+//        }
+        
+        guard let upEvent = CGEvent(mouseEventSource: nil, mouseType: .leftMouseUp, mouseCursorPosition: point, mouseButton: .left) else {
+            return
+        }
+//        moveEvent.post(tap: CGEventTapLocation.cghidEventTap)
+        upEvent.post(tap: CGEventTapLocation.cghidEventTap)
+    }
+    
+    
+    
+    
+    func mouseMoveAndRightClick(onPoint point: CGPoint) {
+//        guard let moveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: point, mouseButton: .right) else {
+//            return
+//        }
+        guard let downEvent = CGEvent(mouseEventSource: nil, mouseType: .rightMouseDown, mouseCursorPosition: point, mouseButton: .right) else {
+            return
+        }
+        guard let upEvent = CGEvent(mouseEventSource: nil, mouseType: .rightMouseUp, mouseCursorPosition: point, mouseButton: .right) else {
+            return
+        }
+//        moveEvent.post(tap: CGEventTapLocation.cghidEventTap)
+        downEvent.post(tap: CGEventTapLocation.cghidEventTap)
+        upEvent.post(tap: CGEventTapLocation.cghidEventTap)
+    }
     
     
     
@@ -206,6 +324,7 @@ extension AppDelegate: CBPeripheralDelegate {
         var mouseLoc = NSEvent.mouseLocation()
         mouseLoc.y = NSHeight(NSScreen.screens()![0].frame) - mouseLoc.y;
         let newLoc = CGPoint(x: mouseLoc.x+CGFloat(dx), y: mouseLoc.y-CGFloat(dy))
+        print(newLoc)
         CGDisplayMoveCursorToPoint(0, newLoc)
 }
 }
