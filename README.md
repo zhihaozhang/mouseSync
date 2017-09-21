@@ -5,7 +5,7 @@
 
 === 2017-09-21日更新 ===
 
-增加了对鼠标双击事件的支持。
+增加了对鼠标双击事件的支持。demo url: https://syy.freep.cn/588778/demo2.gif
 
 ![](https://syy.freep.cn/588778/demo2.gif)
 
