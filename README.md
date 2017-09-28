@@ -1,7 +1,16 @@
 # mouseSync
 
+## 开发的过程请参考我的[博客](http://zhihaozhang.github.io/2017/09/23/让iMac与MacBook高效协同工作——mouseSync开发心得/)
+
 让一台Mac的键盘通过蓝牙成为另一台设备的键盘，市面上有很多，但让Mac的触摸板/鼠标成为另一台Mac的触摸板/鼠标却很少（我没有发现，如果有请issue）。
 考虑到iMac关闭了纯显示器模式，所以mouseSync出现了。为使用MacBook和iMac协同工作的人制作。
+
+
+=== 2017-09-22日更新 ===
+
+增加了对触摸板上下/左右滑动手势的支持。demo url:https://syy.freep.cn/588778/demo922.gif
+
+![](https://syy.freep.cn/588778/demo922.gif)
 
 === 2017-09-21日更新 ===
 

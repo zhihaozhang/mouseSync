@@ -92,12 +92,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             var dx = abs(Int(event.deltaX))
             var dy = abs(Int(event.deltaY))
             if (dx == 0 && dy == 0) {
-                
             }else if dx>dy {
-//                print("flag1 \(dx) \(dy)")
                 self.notifyValueAction(Int(event.deltaX), -6666)
             }else{
-//                print("flag2 \(dx) \(dy)")
                 self.notifyValueAction(-6666, Int(event.deltaY))
             }
             return nil
