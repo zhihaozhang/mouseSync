@@ -20,8 +20,8 @@ void createScrollWheelEventY(float x) {
 
 void createScrollWheelEventX(int y) {
         CGEventRef upEvent = CGEventCreateScrollWheelEvent(
-                                                       NULL,
-                                                       kCGScrollEventUnitPixel, 2, 0, y*5);
+    NULL,
+    kCGScrollEventUnitPixel, 2, 0, y*5);
     CGEventPost(kCGHIDEventTap, upEvent);
     CFRelease(upEvent);
 }

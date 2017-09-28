@@ -20,36 +20,42 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var peripheralManager: CBPeripheralManager?
     var characteristic :CBMutableCharacteristic?
     
-    
+    var previousX = NSEvent.mouseLocation().x;
+    var previousY = NSEvent.mouseLocation().y;
+   
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        
         // Insert code here to initialize your application
-        var previousX = NSEvent.mouseLocation().x;
-        var previousY = NSEvent.mouseLocation().y;
+        previousX = NSEvent.mouseLocation().x;
+        previousY = NSEvent.mouseLocation().y;
         
         NSEvent.addLocalMonitorForEvents(matching: [.mouseMoved]) {
             self.mouseLocation = NSEvent.mouseLocation()
+            self.notifyValueAction(Int(NSEvent.mouseLocation().x-self.previousX),Int(NSEvent.mouseLocation().y-self.previousY))
             
-            self.notifyValueAction(Int(NSEvent.mouseLocation().x-previousX),Int(NSEvent.mouseLocation().y-previousY))
+            self.previousX = NSEvent.mouseLocation().x;
+            self.previousY = NSEvent.mouseLocation().y;
             
-            previousX = NSEvent.mouseLocation().x;
-            previousY = NSEvent.mouseLocation().y;
+            self.detectAndMoveToScreenCenter(self.previousX,self.previousY);
             
             return $0
         }
         
-        NSEvent.addGlobalMonitorForEvents(matching: [.mouseMoved]) { _ in
-            self.mouseLocation = NSEvent.mouseLocation()
-            self.notifyValueAction(Int(NSEvent.mouseLocation().x-previousX),Int(NSEvent.mouseLocation().y-previousY))
-            
-            previousX = NSEvent.mouseLocation().x;
-            previousY = NSEvent.mouseLocation().y;
-            
-        }
+//        NSEvent.addGlobalMonitorForEvents(matching: [.mouseMoved]) { _ in
+//            self.mouseLocation = NSEvent.mouseLocation()
+//            self.notifyValueAction(Int(NSEvent.mouseLocation().x-self.previousX),Int(NSEvent.mouseLocation().y-self.previousY))
+//
+//            self.previousX = NSEvent.mouseLocation().x;
+//            self.previousY = NSEvent.mouseLocation().y;
+//
+//            self.detectAndMoveToScreenCenter(self.previousX,self.previousY);
+//
+//        }
         
        
         
-        NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown]) {event in
+        NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown]) {event in
             
             if event.clickCount >= 2{
                 self.notifyValueAction(-5555, -5555)
@@ -58,44 +64,43 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 self.mouseLocation = NSEvent.mouseLocation()
                 self.notifyValueAction(-9999, -9999)
             }
+            
+            return nil
         }
         
         
-        NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseUp]) {_ in
+        NSEvent.addLocalMonitorForEvents(matching: [.leftMouseUp]) {_ in
             self.mouseLocation = NSEvent.mouseLocation()
             self.notifyValueAction(-8888, -8888)
+            return nil
         }
         
         
         
-        NSEvent.addGlobalMonitorForEvents(matching: [.rightMouseDown]) {_ in
+        NSEvent.addLocalMonitorForEvents(matching: [.rightMouseDown]) {_ in
             self.mouseLocation = NSEvent.mouseLocation()
             
             var mouseLoc = NSEvent.mouseLocation()
             mouseLoc.y = NSHeight(NSScreen.screens()![0].frame) - mouseLoc.y;
             
             self.notifyValueAction(-7777, -7777)
-            
+            return nil
         }
         
-//        NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDragged]) {_ in
-//            self.mouseLocation = NSEvent.mouseLocation()
-//            self.notifyValueAction(-6666, -6666)
-//        }
-        
-        NSEvent.addGlobalMonitorForEvents(matching: [.scrollWheel]) {event in
+        NSEvent.addLocalMonitorForEvents(matching: [.scrollWheel]) {event in
             
             var dx = abs(Int(event.deltaX))
             var dy = abs(Int(event.deltaY))
             if (dx == 0 && dy == 0) {
                 
             }else if dx>dy {
-                print("flag1 \(dx) \(dy)")
+//                print("flag1 \(dx) \(dy)")
                 self.notifyValueAction(Int(event.deltaX), -6666)
             }else{
-                print("flag2 \(dx) \(dy)")
+//                print("flag2 \(dx) \(dy)")
                 self.notifyValueAction(-6666, Int(event.deltaY))
             }
+            return nil
         }
         
 
@@ -110,6 +115,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
+    }
+    
+    
+    func detectAndMoveToScreenCenter(_ x:CGFloat, _ y:CGFloat){
+        let bouce:Int = 50
+        if Int(x) < bouce || Int(x) > Int(SCREEN_WIDTH) - bouce || Int(y) < bouce || Int(y) > Int(SCREEN_HEIGHT) - bouce{
+            let newLoc = CGPoint(x: CGFloat(SCREEN_WIDTH/2), y: CGFloat(SCREEN_HEIGHT/2))
+            CGDisplayMoveCursorToPoint(0, newLoc);
+            
+            self.previousX = SCREEN_WIDTH/2;
+            self.previousY = SCREEN_HEIGHT/2;
+            
+        }
+        
     }
     
     

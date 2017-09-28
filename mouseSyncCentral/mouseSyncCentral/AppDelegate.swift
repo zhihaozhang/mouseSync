@@ -266,14 +266,12 @@ extension AppDelegate: CBPeripheralDelegate {
     }
     
     func mouseMoveAndClickUp(onPoint point: CGPoint) {
-//        guard let moveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: point, mouseButton: .left) else {
-//            return
-//        }
+
         
         guard let upEvent = CGEvent(mouseEventSource: nil, mouseType: .leftMouseUp, mouseCursorPosition: point, mouseButton: .left) else {
             return
         }
-//        moveEvent.post(tap: CGEventTapLocation.cghidEventTap)
+        
         upEvent.post(tap: CGEventTapLocation.cghidEventTap)
     }
     
