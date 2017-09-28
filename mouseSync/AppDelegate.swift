@@ -59,12 +59,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             if event.clickCount >= 2{
                 self.notifyValueAction(-5555, -5555)
-                
             }else{
                 self.mouseLocation = NSEvent.mouseLocation()
                 self.notifyValueAction(-9999, -9999)
             }
-            
             return nil
         }
         
