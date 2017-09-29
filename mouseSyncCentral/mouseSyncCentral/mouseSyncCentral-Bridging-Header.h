@@ -6,4 +6,5 @@
 #define createScrollWheelEvent_h
 void createScrollWheelEventX(int x);
 void createScrollWheelEventY(float y);
+void mouse_left_drag_to(float x, float y);
 #endif /* Header_h */

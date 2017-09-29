@@ -25,3 +25,29 @@ void createScrollWheelEventX(int y) {
     CGEventPost(kCGHIDEventTap, upEvent);
     CFRelease(upEvent);
 }
+
+void mouse_left_drag_to(float x, float y) {
+    
+    /**
+     * create a new Quartz mouse event.
+     * params:
+     * @source : CGEventSourceRef
+     * @mouseType : CGEventType
+     * @mouseCursorPosition : CGPoint
+     * @mouseButton : CGMouseButton
+     */
+    CGEventRef left_drag_event = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDragged, CGPointMake(x, y), 0);
+    
+    /**
+     * post a Quartz event into the event stream at a specified location.
+     * params:
+     * @tap : CGEventTapLocation
+     * @event : CGEventRef
+     */
+    CGEventPost(kCGHIDEventTap, left_drag_event);
+    
+    /**
+     * release a Quartz event
+     */
+    CFRelease(left_drag_event);
+}

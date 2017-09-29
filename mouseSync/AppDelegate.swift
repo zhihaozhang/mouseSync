@@ -31,7 +31,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         NSEvent.addLocalMonitorForEvents(matching: [.mouseMoved]) {
             self.mouseLocation = NSEvent.mouseLocation()
-            self.notifyValueAction(Int(NSEvent.mouseLocation().x-self.previousX),Int(NSEvent.mouseLocation().y-self.previousY))
+            self.notifyValueAction(Int(NSEvent.mouseLocation().x-self.previousX),Int(NSEvent.mouseLocation().y-self.previousY),1)
             
             self.previousX = NSEvent.mouseLocation().x;
             self.previousY = NSEvent.mouseLocation().y;
@@ -57,10 +57,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown]) {event in
             
             if event.clickCount >= 2{
-                self.notifyValueAction(-5555, -5555)
+                self.notifyValueAction(-5555, -5555,2)
             }else{
                 self.mouseLocation = NSEvent.mouseLocation()
-                self.notifyValueAction(-9999, -9999)
+                self.notifyValueAction(-9999, -9999,2)
             }
             return nil
         }
@@ -68,7 +68,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         NSEvent.addLocalMonitorForEvents(matching: [.leftMouseUp]) {_ in
             self.mouseLocation = NSEvent.mouseLocation()
-            self.notifyValueAction(-8888, -8888)
+            self.notifyValueAction(-8888, -8888,3)
             return nil
         }
         
@@ -80,7 +80,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             var mouseLoc = NSEvent.mouseLocation()
             mouseLoc.y = NSHeight(NSScreen.screens()![0].frame) - mouseLoc.y;
             
-            self.notifyValueAction(-7777, -7777)
+            self.notifyValueAction(-7777, -7777,4)
             return nil
         }
         
@@ -90,10 +90,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             var dy = abs(Int(event.deltaY))
             if (dx == 0 && dy == 0) {
             }else if dx>dy {
-                self.notifyValueAction(Int(event.deltaX), -6666)
+                self.notifyValueAction(Int(event.deltaX), -6666,5)
             }else{
-                self.notifyValueAction(-6666, Int(event.deltaY))
+                self.notifyValueAction(-6666, Int(event.deltaY),5)
             }
+            return nil
+        }
+        
+        NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDragged]) {event in
+           self.notifyValueAction(Int(NSEvent.mouseLocation().x-self.previousX),Int(NSEvent.mouseLocation().y-self.previousY),6)
             return nil
         }
         
@@ -191,12 +196,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     
-    func notifyValueAction(_ dx:Int, _ dy:Int) {
+    func notifyValueAction(_ dx:Int, _ dy:Int, _ type:Int) {
         
         let dxStr = String(dx)
         let dyStr = String(dy)
+        let dzStr = String(type)
         
-        let notifyStr =  "\(dxStr) \(dyStr)" //self.textFiled.stringValue
+        let notifyStr =  "\(dxStr) \(dyStr) \(dzStr)" //self.textFiled.stringValue
         
         let data = notifyStr.data(using:String.Encoding.utf8)
         
@@ -300,11 +306,11 @@ extension AppDelegate: CBPeripheralManagerDelegate {
     
     func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic) {
         
-        let data = "Update Data".data(using: String.Encoding.utf8)
-        let didSendValue = peripheral.updateValue(data!, for: self.characteristic!, onSubscribedCentrals: nil)
-        if didSendValue {
-            print("didSubscribeToCharacteristic");
-        }
+//        let data = "Update Data".data(using: String.Encoding.utf8)
+//        let didSendValue = peripheral.updateValue(data!, for: self.characteristic!, onSubscribedCentrals: nil)
+//        if didSendValue {
+//            print("didSubscribeToCharacteristic");
+//        }
     }
     
     func doubleClick(at location: NSPoint) {

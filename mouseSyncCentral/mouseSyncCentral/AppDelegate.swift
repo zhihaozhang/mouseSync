@@ -14,7 +14,10 @@ let kCharacteristicUUID: String = "2BCD"
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-
+    
+    var dragFirst:Bool = true;
+    var mouseLocBeforeDrag = NSEvent.mouseLocation()
+    
     var centralManager: CBCentralManager?
     var peripheral: CBPeripheral?
     var serviceUUID :CBUUID{
@@ -43,8 +46,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.centralManager = CBCentralManager(delegate: self, queue: nil)
         
         NSEvent.addGlobalMonitorForEvents(matching: [.scrollWheel]) { event in
-            print(event)
-//            createScrollWheelEvent()
+            
         }
         
     }
@@ -161,12 +163,17 @@ extension AppDelegate: CBPeripheralDelegate {
         }
         let data = characteristic.value
         
+        
         let value = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+        
+       
         
         let fields = value?.components(separatedBy: .whitespaces).filter {!$0.isEmpty}
         
+        
         var dx = Int((fields?[0])!)
         var dy = Int((fields?[1])!)
+        var type = Int((fields?[2])!)
         
         if dx != nil{
             if dy != nil{
@@ -175,14 +182,13 @@ extension AppDelegate: CBPeripheralDelegate {
                     mouseLoc.y = NSHeight(NSScreen.screens()![0].frame) - mouseLoc.y;
                     let newLoc = CGPoint(x: mouseLoc.x, y: mouseLoc.y)
 
-                    print(mouseLoc)
                     mouseMoveAndClickDown(onPoint: mouseLoc)
                 }else if dx == -8888 && dy == -8888{
+                    dragFirst = true
                     var mouseLoc = NSEvent.mouseLocation()
                     mouseLoc.y = NSHeight(NSScreen.screens()![0].frame) - mouseLoc.y;
                     let newLoc = CGPoint(x: mouseLoc.x, y: mouseLoc.y)
                     
-                    print(mouseLoc)
                     mouseMoveAndClickUp(onPoint: mouseLoc)
                 }
                 else if dx == -7777 && dy == -7777{
@@ -190,7 +196,6 @@ extension AppDelegate: CBPeripheralDelegate {
                     mouseLoc.y = NSHeight(NSScreen.screens()![0].frame) - mouseLoc.y;
                     let newLoc = CGPoint(x: mouseLoc.x, y: mouseLoc.y)
                     
-                    print(mouseLoc)
                     mouseMoveAndRightClick(onPoint: mouseLoc)
                 }
                 else if dy == -6666{
@@ -208,6 +213,15 @@ extension AppDelegate: CBPeripheralDelegate {
                     
                     doubleClick(at: newLoc)
 
+                }else if type == 6{
+                    if dragFirst == true{
+                        dragFirst = false
+                        mouseLocBeforeDrag = NSEvent.mouseLocation()
+                        mouseLocBeforeDrag.y = NSHeight(NSScreen.screens()![0].frame) - mouseLocBeforeDrag.y;
+                        mouse_left_drag_to(Float(mouseLocBeforeDrag.x)+Float(dx!),Float(mouseLocBeforeDrag.y)-Float(dy!))
+                    }else{
+                        mouse_left_drag_to(Float(mouseLocBeforeDrag.x)+Float(dx!),Float(mouseLocBeforeDrag.y)-Float(dy!))
+                    }
                 }
                 else{
                     print(dx!)
@@ -216,11 +230,6 @@ extension AppDelegate: CBPeripheralDelegate {
                 }
             }
         }
-        
-        
-        
-        
-        
     }
     
     
@@ -293,6 +302,8 @@ extension AppDelegate: CBPeripheralDelegate {
         upEvent.post(tap: CGEventTapLocation.cghidEventTap)
     }
     
+   
+    
     
     
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
@@ -322,7 +333,6 @@ extension AppDelegate: CBPeripheralDelegate {
         var mouseLoc = NSEvent.mouseLocation()
         mouseLoc.y = NSHeight(NSScreen.screens()![0].frame) - mouseLoc.y;
         let newLoc = CGPoint(x: mouseLoc.x+CGFloat(dx), y: mouseLoc.y-CGFloat(dy))
-        print(newLoc)
         CGDisplayMoveCursorToPoint(0, newLoc)
 }
 }
