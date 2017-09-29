@@ -14,7 +14,7 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        self.view.window?.zoom(self)
     }
     
     override var representedObject: Any? {

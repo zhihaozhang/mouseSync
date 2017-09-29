@@ -9,7 +9,6 @@
 import Cocoa
 import CoreBluetooth
 
-
 let kServiceUUID: String = "84941CC5-EA0D-4CAE-BB06-1F849CCF8495"
 let kCharacteristicUUID: String = "2BCD"
 var LastTimeStamp: NSDate = NSDate()
@@ -121,12 +120,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             self.previousX = SCREEN_WIDTH/2;
             self.previousY = SCREEN_HEIGHT/2;
-            
         }
-        
     }
-    
-    
     
     let SCREEN_WIDTH = NSScreen.main()!.frame.width
     let SCREEN_HEIGHT = NSScreen.main()!.frame.height
@@ -137,9 +132,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func mouseDown(with event: NSEvent) {
         self.mouseMoveAndClick(onPoint: self.mouseLocation)
     }
-    
-    
-    
     
     func move(_ dx:CGFloat , _ dy:CGFloat){
         var mouseLoc = NSEvent.mouseLocation()
