@@ -8,8 +8,9 @@
 === 2017-09-29日**重大更新** ===
 为应用添加了logo。
 
-mouseSync现已支持**drag操作**，散花！
-![][image-1]
+mouseSync现已支持**drag操作**，散花！demo url:https://syy.freep.cn/588778/dragdemo.gif
+
+![](https://syy.freep.cn/588778/dragdemo.gif)
 
 
 === 2017-09-28日更新 ===
