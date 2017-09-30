@@ -6,7 +6,9 @@
 考虑到iMac关闭了纯显示器模式，所以mouseSync出现了。为使用MacBook和iMac协同工作的人制作。
 
 === 2017-09-29日**重大更新** ===
+
 为应用添加了logo。
+![](https://syy.freep.cn/588778/icons.png)
 
 mouseSync现已支持**drag操作**，散花！demo url:https://syy.freep.cn/588778/dragdemo.gif
 
@@ -18,6 +20,8 @@ mouseSync现已支持**drag操作**，散花！demo url:https://syy.freep.cn/588
 **防止鼠标误操作**
 
 限制鼠标只能在距离屏幕边缘50像素的范围内移动，防止鼠标进入dock栏和顶栏。
+
+![](https://syy.freep.cn/588778/border.png)
 
 限制仅在程序主窗口内可用，在其他程序或桌面不可用，防止误操作。
 

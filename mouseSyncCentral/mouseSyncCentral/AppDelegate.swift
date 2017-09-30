@@ -232,6 +232,7 @@ extension AppDelegate: CBPeripheralDelegate {
         }
     }
     
+  
     
     
     func doubleClick(at location: NSPoint) {
@@ -302,6 +303,7 @@ extension AppDelegate: CBPeripheralDelegate {
         upEvent.post(tap: CGEventTapLocation.cghidEventTap)
     }
     
+
    
     
     
