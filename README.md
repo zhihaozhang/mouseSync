@@ -9,11 +9,11 @@
 
 mouseSync现已支持**drag操作**，散花！demo url:https://syy.freep.cn/588778/dragdemo.gif
 
-![](https://syy.freep.cn/588778/dragdemo.gif)
+![](https://ws4.sinaimg.cn/large/006tKfTcgy1fmt25snnt6g307k0dcx6s.gif)
 
 为应用添加了logo。
 
-![](https://syy.freep.cn/588778/icons.png)
+![](https://ws3.sinaimg.cn/large/006tKfTcgy1fmt25u0g4tj30bs078jro.jpg)
 
 === 2017-09-28日更新 ===
 
@@ -21,7 +21,7 @@ mouseSync现已支持**drag操作**，散花！demo url:https://syy.freep.cn/588
 
 限制鼠标只能在距离屏幕边缘50像素的范围内移动，防止鼠标进入dock栏和顶栏。
 
-![](https://syy.freep.cn/588778/border.png)
+![](https://ws1.sinaimg.cn/large/006tKfTcgy1fmt25ut11pj30vw0j8q3s.jpg)
 
 限制仅在程序主窗口内可用，在其他程序或桌面不可用，防止误操作。
 
