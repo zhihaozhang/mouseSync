@@ -27,19 +27,17 @@ mouseSync现已支持**drag操作**，散花！demo url:https://syy.freep.cn/588
 
 === 2017-09-22日更新 ===
 
-增加了对触摸板上下/左右滑动手势的支持。demo url:https://syy.freep.cn/588778/demo922.gif
+增加了对触摸板上下/左右滑动手势的支持。demo url:https://ws2.sinaimg.cn/large/006tNc79gy1fn7vod1xowg307k0dcb2c.gif
 
 ![][image-2]
 
 === 2017-09-21日更新 ===
 
-增加了对鼠标双击事件的支持。demo url: https://syy.freep.cn/588778/demo2.gif
-
-![][image-3]
+增加了对鼠标双击事件的支持。
 
 === 2017-09-20日更新 ===
 
-鼠标可以响应move、单击、右击事件。demo url: https://syy.freep.cn/588778/demo1.gif
+鼠标可以响应move、单击、右击事件。demo url:https://ws4.sinaimg.cn/large/006tNc79gy1fn7vnmdovpg30hs0a3u17.gif
 
 请注意demo中MacBook Air与MacBook Pro光标移动位置。
 
@@ -48,6 +46,6 @@ mouseSync现已支持**drag操作**，散花！demo url:https://syy.freep.cn/588
 [1]:	http://zhihaozhang.github.io/2017/09/23/%E8%AE%A9iMac%E4%B8%8EMacBook%E9%AB%98%E6%95%88%E5%8D%8F%E5%90%8C%E5%B7%A5%E4%BD%9C%E2%80%94%E2%80%94mouseSync%E5%BC%80%E5%8F%91%E5%BF%83%E5%BE%97/
 
 [image-1]:	https://syy.freep.cn/588778/dragdemo.gif
-[image-2]:	https://syy.freep.cn/588778/demo922.gif
-[image-3]:	https://syy.freep.cn/588778/demo2.gif
-[image-4]:	https://syy.freep.cn/588778/demo1.gif
+[image-2]:	https://ws2.sinaimg.cn/large/006tNc79gy1fn7vod1xowg307k0dcb2c.gif
+[image-3]:	https://ws4.sinaimg.cn/large/006tNc79gy1fn7vnmdovpg30hs0a3u17.gif
+[image-4]:	https://ws4.sinaimg.cn/large/006tNc79gy1fn7vnmdovpg30hs0a3u17.gif
