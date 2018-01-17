@@ -7,7 +7,7 @@
 
 === 2017-09-29日**重大更新** ===
 
-mouseSync现已支持**drag操作**，散花！demo url:https://syy.freep.cn/588778/dragdemo.gif
+mouseSync现已支持**drag操作**，散花！demo url:https://ws4.sinaimg.cn/large/006tKfTcgy1fmt25snnt6g307k0dcx6s.gif
 
 ![](https://ws4.sinaimg.cn/large/006tKfTcgy1fmt25snnt6g307k0dcx6s.gif)
 
